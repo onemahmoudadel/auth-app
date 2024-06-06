@@ -20,15 +20,19 @@ app.use(prettyJSON())
 app.use('*',authMiddleware)
 
 
-app.basePath('/api').get('/', (c) => {
-  const user = c.get('user')
-  if(user) return c.json({user})
-  return c.json({Hello: 'Hono!'})
-})
-.route('/auth', authRoute)
+const route = app.basePath('/v1/api')
+  .get('/', (c) => {
+    const user = c.get('user')
+    if(user) return c.json({user})
+    return c.json({Hello: 'Hono!'})
+  })
+
+  .route('/auth', authRoute)
+  
+export type AppType = typeof route
+
 const port = 3000
 console.log(`Server is running on http://localhost:${port}`)
-
 serve({
   fetch: app.fetch,
   port
