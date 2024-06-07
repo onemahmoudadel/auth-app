@@ -11,6 +11,7 @@ import { Settings } from './components/Settings';
 import { SignUp } from './components/SignUp';
 import { Login } from './components/Login';
 import { MainLayout } from './components/MainLayout';
+import { Toaster } from 'sonner';
 
 const router = createBrowserRouter([
   {
@@ -40,5 +41,6 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
      <RouterProvider router={router} />
+     <Toaster />
   </React.StrictMode>,
 )
