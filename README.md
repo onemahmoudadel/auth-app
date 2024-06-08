@@ -69,5 +69,5 @@ npm run dev
 ```
 ### 6. Open the app in your browser
 ```
-open http://localhost: .....
+open http://localhost:5173
 ```
