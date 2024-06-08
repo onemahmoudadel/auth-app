@@ -22,6 +22,8 @@ export const useLogin = () => {
   const mutation = useMutation<LoginResType,Error,LoginReqType>({
     mutationFn: async(json) => {
       const res = await api.auth.login.$post(json)
+      const resData = await res.json()
+      if (resData.error !== null) throw new Error(resData.error) 
       return await res.json()
     },
     onSuccess: () => {
@@ -39,6 +41,8 @@ export const useSignUp = () => {
   const mutation = useMutation<SignUpResType,Error,SignUpReqType>({
     mutationFn: async(json) => {
       const res = await api.auth.signup.$post(json)
+      const resData = await res.json()
+      if (resData.error !== null) throw new Error(resData.error) 
       return await res.json()
     },
     onSuccess: () => {
@@ -57,6 +61,8 @@ export const useLogout = () => {
   const mutation = useMutation<LogoutResType,Error,LogoutReqType>({
     mutationFn: async() => {
       const res = await api.auth.logout.$post()
+      const resData = await res.json()
+      if (resData.error !== null) throw new Error(resData.error) 
       return await res.json()
     },
     onSuccess: () => {

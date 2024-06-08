@@ -27,7 +27,7 @@ export const authRoute = new Hono<{Variables :Variables }>()
 		parallelism: 1
 	});
   if (!validPassword) {
-    return c.json({message:null, error: "Incorrect username or password"})
+    return c.json({message:null, error: "Incorrect username or password"},400)
   }
 
   const session = await lucia.createSession(existingUser.id, {});

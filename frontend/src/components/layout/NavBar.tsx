@@ -16,7 +16,7 @@ import { toast } from "sonner"
 
 export const NavBar = () => {
   const { isLoading,data:user } = useAuth()
-  const {logout,data} = useLogout()
+  const {logout} = useLogout()
 
   const isLogin = !isLoading && !user
   const onLogout = () => {
@@ -24,11 +24,10 @@ export const NavBar = () => {
       onSuccess: () =>{
         toast.success('You are successfully logout')
       },
-      onError:()=>{
-        toast.error(data?.error)
+      onError:(e)=>{
+        toast.error(e.message)
       }
     })
-    data
   }
   return (
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">

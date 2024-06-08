@@ -23,11 +23,12 @@ import { z } from "zod"
 import { toast } from "sonner"
 import { FormError } from "../FormError"
 import { useLogin } from "@/features/auth"
+import { useState } from "react"
 
 export function Login() {
-
+  const [error,setError] = useState<string | null>(null)
   const Navigate = useNavigate()
-  const {login,isPending,data} = useLogin()
+  const {login,isPending} = useLogin()
   const form = useForm<z.infer<typeof logInSchema>>({
     resolver: zodResolver(logInSchema),
     defaultValues: {
@@ -40,6 +41,9 @@ export function Login() {
       onSuccess:()=>{
         Navigate('/')
         toast.success('You are successfully logged in')
+      },
+      onError:(e)=>{
+        setError(e.message)
       }
     })
   }
@@ -54,7 +58,7 @@ export function Login() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <FormError message={data?.error} />
+            <FormError message={error} />
             <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
               <div className="grid gap-2">
                 <FormField

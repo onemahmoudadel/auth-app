@@ -16,10 +16,13 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useSignUp } from "@/features/auth"
 import { FormError } from "../FormError"
+import { useState } from "react"
 
 export function SignUp() {
+  const [error,setError] = useState<string | null>(null)
+
   const Navigate = useNavigate()
-  const {signup,isPending,data} = useSignUp()
+  const {signup,isPending} = useSignUp()
   // const [error,setError] = useState<string | null>(null)
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
@@ -36,6 +39,9 @@ export function SignUp() {
       onSuccess:()=>{
         Navigate('/')
         toast.success('Thanks for signing up. Your account has been created.')
+      },
+      onError:(e)=>{
+        setError(e.message)
       }
     })
   }
@@ -52,7 +58,7 @@ export function SignUp() {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
-          <FormError message={data?.error} />
+          <FormError message={error} />
           <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
               <FormField
