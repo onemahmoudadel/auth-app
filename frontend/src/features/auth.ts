@@ -5,17 +5,14 @@ export const useAuth = () => {
   return useQuery({
     queryKey: ["auth"],
     queryFn: async () => {
-      const res = await api.auth.validateReq.$get()
+      const res = await api.auth.validate.$get()
       if (!res.ok) throw new Error("Server Error") 
-      const json = await res.json()
-      return json as UserSession
+      const {user} = await res.json()
+      return user
     }
   })
 }
-type UserSession = {
-  id: string,
-  userId: string,
-}
+
 // Mutations
 type LoginResType = InferResponseType<typeof api.auth.login.$post>
 type LoginReqType = InferRequestType<typeof api.auth.login.$post>
@@ -31,7 +28,7 @@ export const useLogin = () => {
       queryClient.invalidateQueries({ queryKey: ['auth'] })
     },
   })
-  return {...mutation, signup : mutation.mutate }
+  return {...mutation, login : mutation.mutate }
 }
 
 type SignUpResType = InferResponseType<typeof api.auth.signup.$post>
@@ -48,7 +45,8 @@ export const useSignUp = () => {
       queryClient.invalidateQueries({ queryKey: ['auth'] })
     },
   })
-  return {...mutation, signup : mutation.mutate }
+  
+  return {...mutation, signup : mutation.mutate, }
 }
 
 type LogoutResType = InferResponseType<typeof api.auth.logout.$post>
