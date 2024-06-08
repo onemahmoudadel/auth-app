@@ -1,7 +1,7 @@
 import { Lucia } from "lucia";
-
 import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
 import { PrismaClient } from "@prisma/client";
+import { User } from "../type";
 
 const client = new PrismaClient();
 
@@ -33,9 +33,4 @@ declare module "lucia" {
     DatabaseUserAttributes: User;
 	}
 }
-type User = {
-  email: String,
-  id: String,
-  firstName: String,
-  lastName: String,
-}
+

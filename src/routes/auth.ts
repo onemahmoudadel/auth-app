@@ -18,7 +18,7 @@ export const authRoute = new Hono<{Variables :Variables }>()
     email:data.email
   }})
   if (!existingUser) {
-    return c.json({error: "Incorrect username or password"},400)
+    return c.json({message:null, error: "Incorrect username or password"},400)
   }
   const validPassword = await verify(existingUser.HashPassword, data.password, {
 		memoryCost: 19456,
@@ -27,7 +27,7 @@ export const authRoute = new Hono<{Variables :Variables }>()
 		parallelism: 1
 	});
   if (!validPassword) {
-    return c.json({error: "Incorrect username or password"},400)
+    return c.json({message:null, error: "Incorrect username or password"})
   }
 
   const session = await lucia.createSession(existingUser.id, {});
@@ -35,7 +35,7 @@ export const authRoute = new Hono<{Variables :Variables }>()
   c.header('Set-Cookie',sessionCookie.serialize(),{
     append:true
   })
-  return c.json({login:true})
+  return c.json({message:"You are successfully logged in",error: null})
 })
 
 .post('signup',zValidator('json',signUpSchema), async (c) => {
@@ -45,7 +45,7 @@ export const authRoute = new Hono<{Variables :Variables }>()
     email:data.email
   }})
   if (existingUser){
-    return c.json({error: "User already exists"},400)
+    return c.json({message:null,error: "User already exists"})
     }
   const passwordHash = await hash(data.password, {
 		// recommended minimum parameters
@@ -67,18 +67,25 @@ export const authRoute = new Hono<{Variables :Variables }>()
   c.header('Set-Cookie',sessionCookie.serialize(),{
     append:true
   })
-  return c.json({login:true})
+  return c.json({message:"Thanks for signing up. Your account has been created.", error:null})
 })
 
 .post('logout',async (c) => {
   const session = c.get('session')
   if(!session){
-    return c.json({error:"Unauthorized"},401)
+    return c.json({message:null, error:"Unauthorized"},401)
   }
   await lucia.invalidateSession(session.id)
   const sessionCookie = lucia.createBlankSessionCookie();
   c.header('Set-Cookie',sessionCookie.serialize(),{
     append:true
   })
-  return c.json({login:false})
+  return c.json({message:"You are successfully logout", error:null})
+})
+.get('/validate',(c) => {
+  const user = c.get('user')
+  if(!user) {
+    c.json({user:null},401)
+  }
+  return c.json({user})
 })

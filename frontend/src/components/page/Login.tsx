@@ -1,5 +1,4 @@
-import {Link} from "react-router-dom"
-
+import {Link, useNavigate} from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -19,11 +18,16 @@ import {
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { logInSchema } from "../../../src/schemas/auth"
+import { logInSchema } from "@server/src/schemas/auth"
 import { z } from "zod"
 import { toast } from "sonner"
-import { api } from "@/lib/hono"
+import { FormError } from "../FormError"
+import { useLogin } from "@/features/auth"
+
 export function Login() {
+
+  const Navigate = useNavigate()
+  const {login,isPending,data} = useLogin()
   const form = useForm<z.infer<typeof logInSchema>>({
     resolver: zodResolver(logInSchema),
     defaultValues: {
@@ -32,20 +36,12 @@ export function Login() {
     },
   })
   async function onSubmit(values: z.infer<typeof logInSchema>) {
-    console.log(values)
-    try {
-      const res = await api.auth.login.$post({json:values})
-      const json = await res.json() 
-      console.log({json});
-      if(!res.ok) {
-        toast(json.error)
+    login({json:values},{
+      onSuccess:()=>{
+        Navigate('/')
+        toast.success('You are successfully logged in')
       }
-
-
-    } catch (error) {
-      toast('error')
-    }
-
+    })
   }
   return (
     <div className="mt-20">
@@ -58,6 +54,7 @@ export function Login() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
+            <FormError message={data?.error} />
             <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
               <div className="grid gap-2">
                 <FormField
@@ -94,14 +91,14 @@ export function Login() {
                   )}
                 />
             </div>
-            <Button type="submit" className="w-full">
+            <Button disabled={isPending} type="submit" className="w-full">
               Login
             </Button>
             <Button variant="outline" className="w-full">
               Login with Google
             </Button>
-              </form>
-            </Form>
+            </form>
+          </Form>
 
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}

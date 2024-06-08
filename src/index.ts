@@ -3,22 +3,16 @@ import { Hono } from 'hono'
 import { logger } from 'hono/logger'
 import { csrf } from 'hono/csrf'
 import { prettyJSON } from 'hono/pretty-json'
-
 import { Variables } from './type'
 import { authRoute } from './routes/auth'
 import { authMiddleware } from './auth/middleware'
 
-
-
-
 const app = new Hono<{Variables :Variables }>()
-
 
 app.use(logger())
 app.use(csrf())
 app.use(prettyJSON()) 
 app.use('*',authMiddleware)
-
 
 const route = app.basePath('/v1/api')
   .get('/', (c) => {
