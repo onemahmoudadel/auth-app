@@ -8,11 +8,11 @@
     "@lucia-auth/adapter-prisma": "^4.0.1",
     "hono": "^4.4.4",
     "lucia": "^3.2.0",
-    "prisma": "^5.15.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
+    "prisma": "^5.15.0",
     "tsx": "^4.7.1"
   }
 }
