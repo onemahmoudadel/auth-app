@@ -35,7 +35,7 @@ export const authRoute = new Hono<{Variables :Variables }>()
   c.header('Set-Cookie',sessionCookie.serialize(),{
     append:true
   })
-  return c.json({message:"You are successfully logged in",error: null})
+  return c.json({message:"You are successfully logged in",error: null},200)
 })
 
 .post('signup',zValidator('json',signUpSchema), async (c) => {
@@ -45,7 +45,7 @@ export const authRoute = new Hono<{Variables :Variables }>()
     email:data.email
   }})
   if (existingUser){
-    return c.json({message:null,error: "User already exists"})
+    return c.json({message:null,error: "User already exists"},400)
     }
   const passwordHash = await hash(data.password, {
 		// recommended minimum parameters
@@ -67,7 +67,7 @@ export const authRoute = new Hono<{Variables :Variables }>()
   c.header('Set-Cookie',sessionCookie.serialize(),{
     append:true
   })
-  return c.json({message:"Thanks for signing up. Your account has been created.", error:null})
+  return c.json({message:"Thanks for signing up. Your account has been created.", error:null},201)
 })
 
 .post('logout',async (c) => {
@@ -80,7 +80,7 @@ export const authRoute = new Hono<{Variables :Variables }>()
   c.header('Set-Cookie',sessionCookie.serialize(),{
     append:true
   })
-  return c.json({message:"You are successfully logout", error:null})
+  return c.json({message:"You are successfully logout", error:null},200)
 })
 .get('/validate',(c) => {
   const user = c.get('user')

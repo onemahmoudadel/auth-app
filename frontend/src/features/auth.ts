@@ -6,7 +6,7 @@ export const useAuth = () => {
     queryKey: ["auth"],
     queryFn: async () => {
       const res = await api.auth.validate.$get()
-      if (!res.ok) throw new Error("Server Error") 
+      if (!res.ok) throw new Error("Something went wrong!") 
       const {user} = await res.json()
       return user
     }
@@ -20,11 +20,11 @@ type LoginReqType = InferRequestType<typeof api.auth.login.$post>
 export const useLogin = () => {
   const queryClient = useQueryClient()
   const mutation = useMutation<LoginResType,Error,LoginReqType>({
-    mutationFn: async(json) => {
-      const res = await api.auth.login.$post(json)
+    mutationFn: async(data) => {
+      const res = await api.auth.login.$post(data)
       const resData = await res.json()
       if (resData.error !== null) throw new Error(resData.error) 
-      return await res.json()
+      return resData
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['auth'] })
@@ -39,11 +39,12 @@ type SignUpReqType = InferRequestType<typeof api.auth.signup.$post>
 export const useSignUp = () => {
   const queryClient = useQueryClient()
   const mutation = useMutation<SignUpResType,Error,SignUpReqType>({
-    mutationFn: async(json) => {
-      const res = await api.auth.signup.$post(json)
+    mutationFn: async(data) => {
+      const res = await api.auth.signup.$post(data)
+      // if (!res.ok) throw new Error("Something went wrong!") 
       const resData = await res.json()
-      if (resData.error !== null) throw new Error(resData.error) 
-      return await res.json()
+      // if (resData.error !== null) throw new Error(resData.error) 
+      return resData
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['auth'] })
@@ -63,7 +64,7 @@ export const useLogout = () => {
       const res = await api.auth.logout.$post()
       const resData = await res.json()
       if (resData.error !== null) throw new Error(resData.error) 
-      return await res.json()
+      return resData
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['auth'] })
