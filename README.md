@@ -24,7 +24,7 @@
 ## Demo
 
 <div align="center" >
-  <img src='frontend/src/assets/demo.gif' alt="prisma" width="48" height="48" />
+  <img src='frontend/src/assets/demo.gif' alt="prisma"  />
 </div>
 
 ## Features
