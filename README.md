@@ -46,7 +46,6 @@
 ```shell
 git clone https://github.com/onemahmoudadel/auth-app.git
 ```
-
 ### 2. Install server dependencies
 ```shell
 cd auth-app
@@ -56,6 +55,7 @@ npm install
 ```shell
 npx prisma migrate dev --name init
 npx prisma generate
+npm run dev
 ```
 ### 3. Install frontend dependencies
 open new terminal 
@@ -69,5 +69,5 @@ npm run dev
 ```
 ### 6. Open the app in your browser
 ```
-open http://localhost: .....
+open http://localhost:5173
 ```
