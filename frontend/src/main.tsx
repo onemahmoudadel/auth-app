@@ -49,7 +49,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
           </Routes>
         </Router>
-        <Toaster richColors />
+        <Toaster duration={2000} richColors />
       </div>
     </QueryClientProvider>
   </React.StrictMode>,
