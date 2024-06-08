@@ -40,8 +40,6 @@
 - **Finish** a small project in **one day**
 - Be familiar with **Honojs**, **lucia** and **tanstack query**
 
-## Project Structure
-
 ## Instructions
 
 ### 1. Clone the repository
