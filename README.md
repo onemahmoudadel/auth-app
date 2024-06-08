@@ -43,24 +43,31 @@
 ## Instructions
 
 ### 1. Clone the repository
-
-### 2. Install npm dependencies
-```
-npm install
-npm run dev
-```
-### 4. Initialize the database
-
 ```shell
+git clone https://github.com/onemahmoudadel/auth-app.git
+```
+
+### 2. Install server dependencies
+```shell
+cd auth-app
+npm install
+```
+### 3. Initialize the database
+```shell
+npx prisma migrate dev --name init
 npx prisma generate
-npx prisma migrate deploy
+```
+### 3. Install frontend dependencies
+open new terminal 
+```shell
+cd auth-app/fontend
+npm install
 ```
 ### 5. Run the dev server
-
 ```shell
 npm run dev
 ```
 ### 6. Open the app in your browser
 ```
-open http://localhost:3000
+open http://localhost: .....
 ```
